@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>布斯《小说修辞学》交互式学习指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            font-weight: normal;
+        }
+        
+        .author-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .author-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 15px;
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .author-details {
+            text-align: left;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .chapter {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border-left: 5px solid #3498db;
+        }
+        
+        .chapter:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chapter-number {
+            background-color: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .key-term {
+            font-weight: bold;
+            color: #e74c3c;
+            cursor: pointer;
+            border-bottom: 1px dotted #e74c3c;
+        }
+        
+        .quote {
+            font-style: italic;
+            color: #7f8c8d;
+            border-left: 3px solid #3498db;
+            padding-left: 15px;
+            margin: 15px 0;
+            background-color: rgba(52, 152, 219, 0.05);
+            padding: 10px 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .examples {
+            background-color: #e8f4fc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 3px solid #2980b9;
+        }
+        
+        .examples h3 {
+            color: #2980b9;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .toc {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .toc h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            columns: 2;
+        }
+        
+        .toc li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .toc li:before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .toc a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .toc a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .nav-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            height: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .share-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .share-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .share-facebook {
+            background-color: #3b5998;
+            color: white;
+        }
+        
+        .share-twitter {
+            background-color: #1da1f2;
+            color: white;
+        }
+        
+        .share-linkedin {
+            background-color: #0077b5;
+            color: white;
+        }
+        
+        .share-copy {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .quiz-section {
+            background-color: #e8f4fc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .quiz-question {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .quiz-option {
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-option:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .quiz-option.selected {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .quiz-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .quiz-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .quiz-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .notes-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff9e6;
+            border-radius: 8px;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .notes-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .save-notes {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .save-notes:hover {
+            background-color: #e67e22;
+        }
+        
+        .term-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        }
+        
+        .close-modal {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+        
+        .book-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: #3498db;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="book-icon">📚</div>
+        
+        <header>
+            <h1>布斯《小说修辞学》交互式学习指南</h1>
+            <p class="subtitle">探索小说叙事艺术的理论与实践</p>
+            
+            <div class="author-info">
+                <div class="author-img">韦恩·C·布斯<br>肖像</div>
+                <div class="author-details">
+                    <h3>韦恩·C·布斯 (Wayne C. Booth)</h3>
+                    <p>美国文学批评家、修辞学家，芝加哥大学教授</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="toc">
+            <h2>内容目录</h2>
+            <ul>
+                <li><a href="#chapter1">第一章：隐含作者</a></li>
+                <li><a href="#chapter2">第二章：可靠与不可靠叙述</a></li>
+                <li><a href="#chapter3">第三章：叙述距离</a></li>
+                <li><a href="#chapter4">第四章：反讽与同离效果</a></li>
+                <li><a href="#chapter5">第五章：展示与讲述</a></li>
+                <li><a href="#chapter6">第六章：修辞伦理</a></li>
+            </ul>
+        </div>
+        
+        <div class="content-grid">
+            <div class="chapter" id="chapter1">
+                <h2>第一章：隐含作者 <span class="chapter-number">1</span></h2>
+                <p>布斯的<span class="key-term" data-term="隐含作者">隐含作者</span>概念指的是读者从文本中重建的作者形象，而非真实生活中的作者本人。这个形象是读者通过阅读文本构建出来的，代表了作品所体现的价值观、信念和艺术选择。</p>
+                <p class="quote">"隐含作者有意或无意地选择我们会读到的东西；我们把他推断为那个理想化的、文学的、创造出来的版本，是真实作者最深刻的自我。"</p>
+                <div class="examples">
+                    <h3>实例分析</h3>
+                    <p>在简·奥斯汀的《傲慢与偏见》中，隐含作者通过讽刺和幽默的语调，展现了对社会习俗和婚姻观念的批判态度，这与历史上真实的简·奥斯汀可能有所不同。</p>
+                </div>
+                
+                <div class="quiz-section">
+                    <div class="quiz-question">1. 隐含作者是指：</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">A. 小说中隐藏的角色</div>
+                        <div class="quiz-option" data-correct="true">B. 读者从文本中重建的作者形象</div>
+                        <div class="quiz-option" data-correct="false">C. 作者的匿名笔名</div>
+                        <div class="quiz-option" data-correct="false">D. 小说中的叙述者</div>
+                    </div>
+                    <div class="quiz-result"></div>
+                </div>
+                
+                <div class="notes-section">
+                    <h3>学习笔记</h3>
+                    <textarea class="notes-textarea" placeholder="记录您的学习笔记..."></textarea>
+                    <button class="save-notes">保存笔记</button>
+                </div>
+            </div>
+            
+            <div class="chapter" id="chapter2">
+                <h2>第二章：可靠与不可靠叙述 <span class="chapter-number">2</span></h2>
+                <p>布斯区分了<span class="key-term" data-term="可靠叙述者">可靠叙述者</span>和<span class="key-term" data-term="不可靠叙述者">不可靠叙述者</span>。可靠叙述者的价值观与隐含作者一致，而不可靠叙述者则在认知或道德上与隐含作者存在距离。</p>
+                <p>不可靠叙述可以分为两种类型：一种涉及事实/事件轴（叙述者对事件的描述不准确），另一种涉及价值/判断轴（叙述者的价值判断与隐含作者不一致）。</p>
+                <div class="examples">
+                    <h3>实例分析</h3>
+                    <p>在爱伦·坡的《泄密的心》中，叙述者坚称自己神志清醒，但他的行为和语言却显示出明显的精神错乱，这是一个典型的不可靠叙述者案例。</p>
+                </div>
+                
+                <div class="quiz-section">
+                    <div class="quiz-question">2. 不可靠叙述者：</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">A. 总是故意欺骗读者</div>
+                        <div class="quiz-option" data-correct="false">B. 只出现在侦探小说中</div>
+                        <div class="quiz-option" data-correct="true">C. 在认知或道德上与隐含作者存在距离</div>
+                        <div class="quiz-option" data-correct="false">D. 是作者的直接代言人</div>
+                    </div>
+                    <div class="quiz-result"></div>
+                </div>
+                
+                <div class="notes-section">
+                    <h3>学习笔记</h3>
+                    <textarea class="notes-textarea" placeholder="记录您的学习笔记..."></textarea>
+                    <button class="save-notes">保存笔记</button>
+                </div>
+            </div>
+            
+            <div class="chapter" id="chapter3">
+                <h2>第三章：叙述距离 <span class="chapter-number">3</span></h2>
+                <p><span class="key-term" data-term="叙述距离">叙述距离</span>指的是叙述者、人物、隐含作者和读者之间的价值观念和道德判断的差异程度。布斯认为，小说艺术的精髓在于对这些距离的巧妙控制。</p>
+                <p>作者可以通过调整叙述距离，引导读者对人物和事件产生特定的情感反应和道德判断。</p>
+                <div class="examples">
+                    <h3>实例分析</h3>
+                    <p>在菲茨杰拉德的《了不起的盖茨比》中，尼克·卡拉威作为叙述者与主人公盖茨比保持一定的道德距离，既同情又批判，这种微妙的距离控制增强了小说的复杂性和深度。</p>
+                </div>
+                
+                <div class="quiz-section">
+                    <div class="quiz-question">3. 叙述距离是指：</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">A. 叙述者与人物之间的物理距离</div>
+                        <div class="quiz-option" data-correct="false">B. 小说中事件发生的时间跨度</div>
+                        <div class="quiz-option" data-correct="true">C. 叙述者、人物、隐含作者和读者之间的价值观念差异</div>
+                        <div class="quiz-option" data-correct="false">D. 作者与读者之间的地理距离</div>
+                    </div>
+                    <div class="quiz-result"></div>
+                </div>
+                
+                <div class="notes-section">
+                    <h3>学习笔记</h3>
+                    <textarea class="notes-textarea" placeholder="记录您的学习笔记..."></textarea>
+                    <button class="save-notes">保存笔记</button>
+                </div>
+            </div>
+            
+            <div class="chapter" id="chapter4">
+                <h2>第四章：反讽与同离效果 <span class="chapter-number">4</span></h2>
+                <p>布斯详细探讨了<span class="key-term" data-term="反讽">反讽</span>在小说中的运用，特别是稳定反讽和不稳定反讽的区别。稳定反讽引导读者走向明确的替代理解，而不稳定反讽则创造多重可能的意义。</p>
+                <p>此外，布斯还讨论了<span class="key-term" data-term="同离效果">同离效果</span>，即作者有意打破读者的情感投入，促使他们进行理性思考。</p>
+                <div class="examples">
+                    <h3>实例分析</h3>
+                    <p>在乔伊斯的《都柏林人》中，许多故事结尾都采用了顿悟技巧，这种稳定反讽让读者看清人物自身未能察觉的真相。</p>
+                </div>
+                
+                <div class="quiz-section">
+                    <div class="quiz-question">4. 稳定反讽：</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">A. 让读者感到困惑不解</div>
+                        <div class="quiz-option" data-correct="true">B. 引导读者走向明确的替代理解</div>
+                        <div class="quiz-option" data-correct="false">C. 只出现在喜剧作品中</div>
+                        <div class="quiz-option" data-correct="false">D. 是作者写作技巧不成熟的表现</div>
+                    </div>
+                    <div class="quiz-result"></div>
+                </div>
+                
+                <div class="notes-section">
+                    <h3>学习笔记</h3>
+                    <textarea class="notes-textarea" placeholder="记录您的学习笔记..."></textarea>
+                    <button class="save-notes">保存笔记</button>
+                </div>
+            </div>
+            
+            <div class="chapter" id="chapter5">
+                <h2>第五章：展示与讲述 <span class="chapter-number">5</span></h2>
+                <p>布斯批评了现代小说理论中对<span class="key-term" data-term="展示">"展示"</span>（showing）的过度推崇和对<span class="key-term" data-term="讲述">"讲述"</span>（telling）的贬低。他认为，两种手法各有其价值和适用情境。</p>
+                <p>有效的讲述可以直接传达思想情感，而不仅仅是客观呈现事件。关键在于如何根据作品的整体效果选择合适的叙述方式。</p>
+                <div class="examples">
+                    <h3>实例分析</h3>
+                    <p>在托尔斯泰的《安娜·卡列尼娜》中，作者既使用展示手法呈现安娜与渥伦斯基的情感发展，又通过讲述直接表达对婚姻、道德和社会规范的见解。</p>
+                </div>
+                
+                <div class="quiz-section">
+                    <div class="quiz-question">5. 关于"展示"与"讲述"：</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">A. "展示"总是优于"讲述"</div>
+                        <div class="quiz-option" data-correct="false">B. "讲述"已经过时，不应在现代小说中使用</div>
+                        <div class="quiz-option" data-correct="true">C. 两种手法各有价值，应根据作品需要选择</div>
+                        <div class="quiz-option" data-correct="false">D. "讲述"只适用于儿童文学</div>
+                    </div>
+                    <div class="quiz-result"></div>
+                </div>
+                
+                <div class="notes-section">
+                    <h3>学习笔记</h3>
+                    <textarea class="notes-textarea" placeholder="记录您的学习笔记..."></textarea>
+                    <button class="save-notes">保存笔记</button>
+                </div>
+            </div>
+            
+            <div class="chapter" id="chapter6">
+                <h2>第六章：修辞伦理 <span class="chapter-number">6</span></h2>
+                <p>布斯强调小说修辞不仅仅是技巧问题，还涉及<span class="key-term" data-term="修辞伦理">修辞伦理</span>。作者对读者的影响负有道德责任，作品应该促进人类理解和同情，而非操纵或欺骗。</p>
+                <p>他认为，伟大的文学作品能够创造"友谊的修辞"，即作者与读者之间建立一种基于共同价值观和理解的关系。</p>
+                <div class="examples">
+                    <h3>实例分析</h3>
+                    <p>乔治·奥威尔的《1984》通过其独特的修辞策略，不仅批判了极权主义，还促使读者反思语言、权力和真理的关系，体现了布斯所说的修辞伦理。</p>
+                </div>
+                
+                <div class="quiz-section">
+                    <div class="quiz-question">6. 修辞伦理强调：</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">A. 作者可以任意操纵读者</div>
+                        <div class="quiz-option" data-correct="true">B. 作者对读者的影响负有道德责任</div>
+                        <div class="quiz-option" data-correct="false">C. 小说不应包含任何道德判断</div>
+                        <div class="quiz-option" data-correct="false">D. 修辞技巧比伦理更重要</div>
+                    </div>
+                    <div class="quiz-result"></div>
+                </div>
+                
+                <div class="notes-section">
+                    <h3>学习笔记</h3>
+                    <textarea class="notes-textarea" placeholder="记录您的学习笔记..."></textarea>
+                    <button class="save-notes">保存笔记</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn">上一章</button>
+            <button class="nav-btn" id="nextBtn">下一章</button>
+        </div>
+        
+        <div class="share-section">
+            <h3>分享此学习资源</h3>
+            <p>与同学和朋友分享布斯《小说修辞学》的学习资料</p>
+            <div class="share-buttons">
+                <button class="share-btn share-facebook">Facebook</button>
+                <button class="share-btn share-twitter">Twitter</button>
+                <button class="share-btn share-linkedin">LinkedIn</button>
+                <button class="share-btn share-copy" id="copyLinkBtn">复制链接</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 布斯《小说修辞学》交互式学习网页 | 基于韦恩·C·布斯的《小说修辞学》（The Rhetoric of Fiction, 1961）</p>
+            <p>本网页仅供教育目的，旨在帮助学生理解布斯的小说理论</p>
+        </footer>
+    </div>
+    
+    <div class="term-modal" id="termModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 id="modalTerm"></h2>
+            <div id="modalDefinition"></div>
+        </div>
+    </div>
+
+    <script>
+        // 进度条更新
+        function updateProgress() {
+            const chapters = document.querySelectorAll('.chapter');
+            const totalChapters = chapters.length;
+            let completedChapters = 0;
+            
+            chapters.forEach(chapter => {
+                const quizResult = chapter.querySelector('.quiz-result');
+                if (quizResult && quizResult.style.display === 'block' && quizResult.classList.contains('quiz-correct')) {
+                    completedChapters++;
+                }
+            });
+            
+            const progress = (completedChapters / totalChapters) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+        
+        // 测验功能
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const quizSection = this.closest('.quiz-section');
+                const options = quizSection.querySelectorAll('.quiz-option');
+                const result = quizSection.querySelector('.quiz-result');
+                
+                // 移除所有选项的选中状态
+                options.forEach(opt => opt.classList.remove('selected'));
+                
+                // 设置当前选项为选中状态
+                this.classList.add('selected');
+                
+                // 显示结果
+                result.style.display = 'block';
+                if (this.getAttribute('data-correct') === 'true') {
+                    result.textContent = '正确！';
+                    result.className = 'quiz-result quiz-correct';
+                } else {
+                    result.textContent = '不正确，请再试一次。';
+                    result.className = 'quiz-result quiz-incorrect';
+                }
+                
+                updateProgress();
+            });
+        });
+        
+        // 保存笔记功能
+        document.querySelectorAll('.save-notes').forEach(button => {
+            button.addEventListener('click', function() {
+                const textarea = this.previousElementSibling;
+                const chapter = this.closest('.chapter');
+                const chapterId = chapter.id;
+                
+                localStorage.setItem(`notes-${chapterId}`, textarea.value);
+                alert('笔记已保存！');
+            });
+        });
+        
+        // 加载保存的笔记
+        document.querySelectorAll('.chapter').forEach(chapter => {
+            const chapterId = chapter.id;
+            const savedNotes = localStorage.getItem(`notes-${chapterId}`);
+            if (savedNotes) {
+                const textarea = chapter.querySelector('.notes-textarea');
+                textarea.value = savedNotes;
+            }
+        });
+        
+        // 术语弹窗
+        document.querySelectorAll('.key-term').forEach(term => {
+            term.addEventListener('click', function() {
+                const termText = this.getAttribute('data-term');
+                const modal = document.getElementById('termModal');
+                const modalTerm = document.getElementById('modalTerm');
+                const modalDefinition = document.getElementById('modalDefinition');
+                
+                modalTerm.textContent = termText;
+                
+                // 根据术语设置定义
+                let definition = '';
+                switch(termText) {
+                    case '隐含作者':
+                        definition = '读者从文本中重建的作者形象，而非真实生活中的作者本人。这个形象代表了作品所体现的价值观、信念和艺术选择。';
+                        break;
+                    case '可靠叙述者':
+                        definition = '其价值观与隐含作者一致的叙述者，读者可以信赖其叙述的真实性和判断的正确性。';
+                        break;
+                    case '不可靠叙述者':
+                        definition = '在认知或道德上与隐含作者存在距离的叙述者，其叙述可能不准确或价值判断有偏差。';
+                        break;
+                    case '叙述距离':
+                        definition = '叙述者、人物、隐含作者和读者之间的价值观念和道德判断的差异程度。';
+                        break;
+                    case '反讽':
+                        definition = '一种修辞手法，通过表面意义与实际意义的差异，表达与字面意思相反的含义。';
+                        break;
+                    case '同离效果':
+                        definition = '作者有意打破读者的情感投入，促使他们进行理性思考的叙事策略。';
+                        break;
+                    case '展示':
+                        definition = '通过人物行动、对话和环境描写等方式，让读者自行推断故事的意义。';
+                        break;
+                    case '讲述':
+                        definition = '叙述者直接向读者解释事件意义、人物动机和价值判断的叙事方式。';
+                        break;
+                    case '修辞伦理':
+                        definition = '小说修辞中涉及的道德责任问题，强调作者应对读者的影响负责。';
+                        break;
+                    default:
+                        definition = '术语定义加载中...';
+                }
+                
+                modalDefinition.textContent = definition;
+                modal.style.display = 'flex';
+            });
+        });
+        
+        // 关闭术语弹窗
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('termModal').style.display = 'none';
+        });
+        
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('termModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // 分享功能
+        document.getElementById('copyLinkBtn').addEventListener('click', function() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('链接已复制到剪贴板！');
+            });
+        });
+        
+        // 导航按钮
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            alert('导航到上一章');
+            // 实际应用中这里会有更复杂的导航逻辑
+        });
+        
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            alert('导航到下一章');
+            // 实际应用中这里会有更复杂的导航逻辑
+        });
+        
+        // 初始化进度条
+        updateProgress();
+    </script>
+</body>
+</html>
